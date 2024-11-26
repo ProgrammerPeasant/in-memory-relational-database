@@ -371,4 +371,34 @@ namespace Database {
         }
     }
 
+    void Database::execute(const std::string& query) {
+        // Create a Parser object with the input query
+        Parser parser(query);
+
+        // Check for "CREATE" command
+        if (parser.matchKeyword("CREATE")) {
+
+            DatabaseParser::Parser createParser(query);
+            DatabaseParser::CreateTableStatement createStmt = createParser.parseCreateTable();
+
+            this->createTable(createStmt);
+
+        }
+            // Check for "INSERT" command
+        else if (parser.matchKeyword("INSERT")) {
+            // Parse and execute the insert statement
+            this->insert(query);
+            //parser.parseInsert(*this);
+        }
+            // Check for "SELECT" command
+        else if (parser.matchKeyword("SELECT")) {
+            // Parse and execute the select statement
+            this->select(query);
+            //parser.parseSelect(*this);
+        }
+        else {
+            throw std::runtime_error("Unknown command in query");
+        }
+    }
+
 }

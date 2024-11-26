@@ -28,6 +28,8 @@ namespace Database {
 
         void select(const std::string& selectStmt);
 
+        void execute(const std::string& query);
+
         Table* getTable(const std::string& name);
 
     private:
@@ -62,12 +64,14 @@ namespace Database {
         void parseInsert(Database& db);
         void parseSelect(Database& db);
 
+        bool matchKeyword(const std::string& keyword);
+
     private:
         std::string input_;
         size_t pos_;
 
         void skipWhitespace();
-        bool matchKeyword(const std::string& keyword);
+
         std::string parseIdentifier();
         std::string parseStringLiteral();
         Value parseValue(const DatabaseParser::TypeDefinition& typeDef);
